@@ -1,0 +1,33 @@
+{
+  "name": "im-resize",
+  "version": "0.0.0",
+  "description": "Efficient image resize with multiple versions support",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Turistforeningen/node-im-resize.git"
+  },
+  "keywords": [
+    "ImageMagick",
+    "convert",
+    "image",
+    "resize",
+    "thumbnail",
+    "versions"
+  ],
+  "author": "Hans Kristian Flaatten <hans.kristian.flaatten@turistforeningen.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turistforeningen/node-im-resize/issues"
+  },
+  "homepage": "https://github.com/Turistforeningen/node-im-resize",
+  "devDependencies": {
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "aspectratio": "^2.0.0"
+  }
+}
