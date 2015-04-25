@@ -1,0 +1,6 @@
+builder:
+  image: starefossen/iojs-imagemagick:1.6-6.9
+  working_dir: /usr/src/app
+  volumes:
+    - ".:/usr/src/app"
+  command: "node polling.js"
