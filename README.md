@@ -25,7 +25,7 @@ npm install im-resize --save
 var resize = require('im-resize');
 ```
 
-### resize(**object** `image`, **object[]** `versions`, **function** `callback`)
+### resize(**object** `image`, **object[]** `versions`, **function** `cb`)
 
 Resize a given source `image` into several `versions`.
 
@@ -38,7 +38,7 @@ Resize a given source `image` into several `versions`.
   * **integer** `maxWidth` - max width for resized image
   * **integer** `maxHeight` - max height for resized image
   * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
-* **function** `callback` - callback function (**Error** `error`, **object[]** `versions`)
+* **function** `cb` - callback function (**Error** `error`, **object[]** `versions`)
   * **Error** `error` - error output if command failed
   * **object[]** `versions` - resized image versions
     * **string** `path` path to the resized image
