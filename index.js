@@ -65,34 +65,45 @@ module.exports.cmd = function(image, versions) {
   ];
 
   for (var i = 0; i < versions.length; i++) {
-    // http://www.imagemagick.org/Usage/files/#mpr
-    cmd.push(sprintf('mpr:%s', image.path));
+    cmd.push(module.exports.cmdVersion(image, versions[i], i === versions.length-1));
+  }
 
-    // -quality
-    cmd.push(sprintf('-quality %d', versions[i].quality || 80));
+  return cmd.join(' ');
+};
 
-    // -crop
-    var crop = module.exports.crop(image, versions[i].aspect);
-    if (crop) {
-      cmd.push(sprintf('-crop "%s"', crop));
-    }
+/**
+ * Get convert command for single version
+ *
+ * @param object image - original image object
+ * @param object version - derivated version
+ * @patam boolean last - true if this is last version
+ *
+ * @return string version convert command
+ */
+module.exports.cmdVersion = function(image, version, last) {
+  var cmd = [];
 
-    // -resize
-    cmd.push(
-      sprintf(
-        '-resize "%dx%d"',
-        versions[i].maxWidth,
-        versions[i].maxHeight
-      )
-    );
+  // http://www.imagemagick.org/Usage/files/#mpr
+  cmd.push(sprintf('mpr:%s', image.path));
 
-    // -write
-    versions[i].path = module.exports.path(image.path, versions[i].suffix);
-    if (i === versions.length - 1) {
-      cmd.push(versions[i].path);
-    } else {
-      cmd.push(sprintf('-write %s +delete', versions[i].path));
-    }
+  // -quality
+  cmd.push(sprintf('-quality %d', version.quality || 80));
+
+  // -crop
+  var crop = module.exports.crop(image, version.aspect);
+  if (crop) {
+    cmd.push(sprintf('-crop "%s"', crop));
+  }
+
+  // -resize
+  cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
+
+  // -write
+  version.path = module.exports.path(image.path, version.suffix);
+  if (last) {
+    cmd.push(version.path);
+  } else {
+    cmd.push(sprintf('-write %s +delete', version.path));
   }
 
   return cmd.join(' ');

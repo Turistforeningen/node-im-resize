@@ -36,8 +36,28 @@ describe('resize.crop()', function() {
   });
 });
 
-describe('resize.cmd()', function() {
+describe('resize.cmd()', function() { });
 
+describe('resize.cmdVersion()', function() {
+  it('sets custom quality if specified', function() {
+    var image = {
+      path: './a.jpg',
+      width: 2000,
+      height: 1000
+    };
+
+    var version = {
+      suffix: '-b',
+      quality: 50,
+      maxWidth: 500,
+      maxHeight: 500
+    };
+
+    var cmd = resize.cmdVersion(image, version);
+    var out = 'mpr:./a.jpg -quality 50 -resize "500x500" -write a-b.jpg +delete';
+
+    assert.equal(cmd, out);
+  });
 });
 
 describe('resize()', function() {
