@@ -61,16 +61,15 @@ module.exports.path = function(path, suffix) {
  */
 module.exports.cmd = function(image, versions) {
   var cmd = [
-    sprintf(
-      'convert %s -quality 80 -strip -write mpr:%s +delete',
-      image.path,
-      image.path
-    )
+    sprintf('convert %s -strip -write mpr:%s +delete', image.path, image.path)
   ];
 
   for (var i = 0; i < versions.length; i++) {
     // http://www.imagemagick.org/Usage/files/#mpr
     cmd.push(sprintf('mpr:%s', image.path));
+
+    // -quality
+    cmd.push(sprintf('-quality %d', versions[i].quality || 80));
 
     // -crop
     var crop = module.exports.crop(image, versions[i].aspect);
