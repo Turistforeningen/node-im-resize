@@ -179,4 +179,42 @@ describe('resize()', function() {
       done();
     });
   });
+
+  it('resizes transparent image', function(done) {
+    this.timeout(10000);
+
+    var image = {
+      path: './assets/transparent.png',
+      width: 800,
+      height: 600
+    };
+
+    for (var i = 0; i < versions.length; i++) {
+      versions[i].flatten = true;
+      versions[i].background = 'red';
+      versions[i].format = 'jpg';
+    }
+
+    var paths = [
+      'assets/transparent-full.jpg',
+      'assets/transparent-1200.jpg',
+      'assets/transparent-800.jpg',
+      'assets/transparent-500.jpg',
+      'assets/transparent-260.jpg',
+      'assets/transparent-150.jpg',
+      'assets/transparent-square-200.jpg',
+      'assets/transparent-square-50.jpg'
+    ];
+
+    resize(image, versions, function(err, versions) {
+      assert.ifError(err);
+      assert(versions instanceof Array);
+
+      for(var i = 0; i < versions.length; i++) {
+        assert.equal(versions[i].path, paths[i]);
+      }
+
+      done();
+    });
+  });
 });
