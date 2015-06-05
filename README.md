@@ -37,6 +37,7 @@ Resize a given source `image` into several `versions`.
   * **string** `suffix` - suffix for the resized image (ex. "-small")
   * **integer** `maxWidth` - max width for resized image
   * **integer** `maxHeight` - max height for resized image
+  * **integer** `quality` - quality for resized image
   * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
 * **function** `cb` - callback function (**Error** `error`, **object[]** `versions`)
   * **Error** `error` - error output if command failed
