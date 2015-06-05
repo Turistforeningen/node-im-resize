@@ -39,6 +39,9 @@ Resize a given source `image` into several `versions`.
   * **integer** `maxHeight` - max height for resized image
   * **integer** `quality` - quality for resized image
   * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
+  * **boolean** `flatten` - used in conjunction with background
+  * **string** `background` - set background to transparent image
+  * **string** `format` - image format for resized image (ex. "png")
 * **function** `cb` - callback function (**Error** `error`, **object[]** `versions`)
   * **Error** `error` - error output if command failed
   * **object[]** `versions` - resized image versions
