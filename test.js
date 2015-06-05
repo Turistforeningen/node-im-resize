@@ -3,7 +3,6 @@
 var assert = require('assert');
 var resize = require('./index');
 
-
 describe('resize.path()', function() {
   it('returns new relative path with suffix', function() {
     assert.equal(resize.path('./foo.jpg', '-bar'), 'foo-bar.jpg');
