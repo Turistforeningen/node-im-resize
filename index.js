@@ -51,7 +51,7 @@ module.exports.path = function(path, suffix, format) {
   var file = b.split('.', 2);
 
   if (format) {
-    file[1] = format
+    file[1] = format;
   }
 
   return join(d, file.join(suffix + '.'));
