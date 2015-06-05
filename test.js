@@ -8,8 +8,19 @@ describe('resize.path()', function() {
     assert.equal(resize.path('./foo.jpg', '-bar'), 'foo-bar.jpg');
   });
 
+  it('returns new relative path with custom format', function() {
+    assert.equal(resize.path('./foo.jpg', '-bar', 'png'), 'foo-bar.png');
+  });
+
   it('returns new absolute path with suffix', function() {
     assert.equal(resize.path('/foo/bar/baz.jpg', '-bix'), '/foo/bar/baz-bix.jpg');
+  });
+
+  it('returns new absolute path with custom format', function() {
+    assert.equal(
+      resize.path('/foo/bar/baz.jpg', '-bix', 'png'),
+      '/foo/bar/baz-bix.png'
+    );
   });
 });
 
@@ -60,46 +71,50 @@ describe('resize.cmdVersion()', function() {
 });
 
 describe('resize()', function() {
-  var versions = [{
-    suffix: '-full',
-    maxHeight: 1920,
-    maxWidth: 1920
-  },{
-    suffix: '-1200',
-    maxHeight: 1200,
-    maxWidth: 1200,
-    aspect: "3:2"
-  },{
-    suffix: '-800',
-    maxHeight: 800,
-    maxWidth: 800,
-    aspect: "3:2"
-  },{
-    suffix: '-500',
-    maxHeight: 500,
-    maxWidth: 500,
-    aspect: "3:2"
-  },{
-    suffix: '-260',
-    maxHeight: 260,
-    maxWidth: 260,
-    aspect: "3:2"
-  },{
-    suffix: '-150',
-    maxHeight: 150,
-    maxWidth: 150,
-    aspect: "3:2"
-  },{
-    suffix: '-square-200',
-    maxHeight: 200,
-    maxWidth: 200,
-    aspect: "1:1"
-  },{
-    suffix: '-square-50',
-    maxHeight: 50,
-    maxWidth: 50,
-    aspect: "1:1"
-  }];
+  var versions;
+
+  beforeEach(function() {
+    versions = [{
+      suffix: '-full',
+      maxHeight: 1920,
+      maxWidth: 1920
+    },{
+      suffix: '-1200',
+      maxHeight: 1200,
+      maxWidth: 1200,
+      aspect: "3:2"
+    },{
+      suffix: '-800',
+      maxHeight: 800,
+      maxWidth: 800,
+      aspect: "3:2"
+    },{
+      suffix: '-500',
+      maxHeight: 500,
+      maxWidth: 500,
+      aspect: "3:2"
+    },{
+      suffix: '-260',
+      maxHeight: 260,
+      maxWidth: 260,
+      aspect: "3:2"
+    },{
+      suffix: '-150',
+      maxHeight: 150,
+      maxWidth: 150,
+      aspect: "3:2"
+    },{
+      suffix: '-square-200',
+      maxHeight: 200,
+      maxWidth: 200,
+      aspect: "1:1"
+    },{
+      suffix: '-square-50',
+      maxHeight: 50,
+      maxWidth: 50,
+      aspect: "1:1"
+    }];
+  });
 
   it('resisizes horizontal image', function(done) {
     this.timeout(10000);
@@ -151,6 +166,44 @@ describe('resize()', function() {
       'assets/vertical-150.jpg',
       'assets/vertical-square-200.jpg',
       'assets/vertical-square-50.jpg'
+    ];
+
+    resize(image, versions, function(err, versions) {
+      assert.ifError(err);
+      assert(versions instanceof Array);
+
+      for(var i = 0; i < versions.length; i++) {
+        assert.equal(versions[i].path, paths[i]);
+      }
+
+      done();
+    });
+  });
+
+  it('resizes transparent image', function(done) {
+    this.timeout(10000);
+
+    var image = {
+      path: './assets/transparent.png',
+      width: 800,
+      height: 600
+    };
+
+    for (var i = 0; i < versions.length; i++) {
+      versions[i].flatten = true;
+      versions[i].background = 'red';
+      versions[i].format = 'jpg';
+    }
+
+    var paths = [
+      'assets/transparent-full.jpg',
+      'assets/transparent-1200.jpg',
+      'assets/transparent-800.jpg',
+      'assets/transparent-500.jpg',
+      'assets/transparent-260.jpg',
+      'assets/transparent-150.jpg',
+      'assets/transparent-square-200.jpg',
+      'assets/transparent-square-50.jpg'
     ];
 
     resize(image, versions, function(err, versions) {

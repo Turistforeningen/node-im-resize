@@ -2,6 +2,7 @@ var exec = require('child_process').exec, child;
 var aspect = require('aspectratio');
 var dirname = require('path').dirname;
 var basename = require('path').basename;
+var extname = require('path').extname;
 var join = require('path').join;
 var sprintf = require('util').format;
 
@@ -39,16 +40,22 @@ module.exports.crop = function(image, ratio) {
 /**
  * Get new path with suffix
  *
- * @param string src- image path
- * @param string ratio - path suffix
+ * @param string path- image path
+ * @param string suffix - path suffix
+ * @param string format - output format
  *
  * @return string path
  */
-module.exports.path = function(path, suffix) {
-  var d = dirname(path);
-  var b = basename(path);
+module.exports.path = function(path, suffix, format) {
+  var dir = dirname(path);
+  var ext = extname(path);
+  var base = basename(path, ext);
 
-  return join(d, b.split('.', 2).join(suffix + '.'));
+  if (format) {
+    ext = '.' + format;
+  }
+
+  return join(dir, base + suffix + ext);
 };
 
 /**
@@ -89,6 +96,16 @@ module.exports.cmdVersion = function(image, version, last) {
   // -quality
   cmd.push(sprintf('-quality %d', version.quality || 80));
 
+  // -background
+  if (version.background) {
+    cmd.push(sprintf('-background "%s"', version.background));
+  }
+
+  // -flatten
+  if (version.flatten) {
+    cmd.push('-flatten');
+  }
+
   // -crop
   var crop = module.exports.crop(image, version.aspect);
   if (crop) {
@@ -99,7 +116,7 @@ module.exports.cmdVersion = function(image, version, last) {
   cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
 
   // -write
-  version.path = module.exports.path(image.path, version.suffix);
+  version.path = module.exports.path(image.path, version.suffix, version.format);
   if (last) {
     cmd.push(version.path);
   } else {
