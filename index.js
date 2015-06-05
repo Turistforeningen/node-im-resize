@@ -2,6 +2,7 @@ var exec = require('child_process').exec, child;
 var aspect = require('aspectratio');
 var dirname = require('path').dirname;
 var basename = require('path').basename;
+var extname = require('path').extname;
 var join = require('path').join;
 var sprintf = require('util').format;
 
@@ -46,15 +47,15 @@ module.exports.crop = function(image, ratio) {
  * @return string path
  */
 module.exports.path = function(path, suffix, format) {
-  var d = dirname(path);
-  var b = basename(path);
-  var file = b.split('.', 2);
+  var dir = dirname(path);
+  var ext = extname(path);
+  var base = basename(path, ext);
 
   if (format) {
-    file[1] = format;
+    ext = '.' + format;
   }
 
-  return join(d, file.join(suffix + '.'));
+  return join(dir, base + suffix + ext);
 };
 
 /**
