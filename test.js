@@ -5,22 +5,23 @@ var resize = require('./index');
 
 describe('resize.path()', function() {
   it('returns new relative path with suffix', function() {
-    assert.equal(resize.path('./foo.jpg', '-bar'), 'foo-bar.jpg');
+    var path = resize.path('./foo.jpg', {suffix: '-bar'});
+    assert.equal(path, 'foo-bar.jpg');
   });
 
   it('returns new relative path with custom format', function() {
-    assert.equal(resize.path('./foo.jpg', '-bar', 'png'), 'foo-bar.png');
+    var path = resize.path('./foo.jpg', {suffix: '-bar', format: 'png'});
+    assert.equal(path, 'foo-bar.png');
   });
 
   it('returns new absolute path with suffix', function() {
-    assert.equal(resize.path('/foo/bar/baz.jpg', '-bix'), '/foo/bar/baz-bix.jpg');
+    var path = resize.path('/foo/bar/baz.jpg', {suffix: '-bix'});
+    assert.equal(path, '/foo/bar/baz-bix.jpg');
   });
 
   it('returns new absolute path with custom format', function() {
-    assert.equal(
-      resize.path('/foo/bar/baz.jpg', '-bix', 'png'),
-      '/foo/bar/baz-bix.png'
-    );
+    var path = resize.path('/foo/bar/baz.jpg', {suffix: '-bix', format: 'png'});
+    assert.equal(path, '/foo/bar/baz-bix.png');
   });
 });
 
