@@ -6,13 +6,13 @@ var extname = require('path').extname;
 var join = require('path').join;
 var sprintf = require('util').format;
 
-module.exports = function(image, versions, cb) {
-  var cmd = module.exports.cmd(image, versions);
+module.exports = function(image, output, cb) {
+  var cmd = module.exports.cmd(image, output.versions);
   exec(cmd, {timeout: 10000}, function(e, stdout, stderr) {
     if (e) { return cb(e); }
     if (stderr) { return cb(new Error(stderr)); }
 
-    return cb(null, versions);
+    return cb(null, output.versions);
   });
 };
 
