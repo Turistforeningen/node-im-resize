@@ -40,22 +40,23 @@ module.exports.crop = function(image, ratio) {
 /**
  * Get new path with suffix
  *
- * @param string path- image path
- * @param string suffix - path suffix
- * @param string format - output format
+ * @param string path - image path
+ * @param string opts - output path transformations
+ *  * format
+ *  * suffix
  *
  * @return string path
  */
-module.exports.path = function(path, suffix, format) {
+module.exports.path = function(path, opts) {
   var dir = dirname(path);
   var ext = extname(path);
   var base = basename(path, ext);
 
-  if (format) {
-    ext = '.' + format;
+  if (opts.format) {
+    ext = '.' + opts.format;
   }
 
-  return join(dir, base + suffix + ext);
+  return join(dir, base + opts.suffix + ext);
 };
 
 /**
@@ -116,7 +117,11 @@ module.exports.cmdVersion = function(image, version, last) {
   cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
 
   // -write
-  version.path = module.exports.path(image.path, version.suffix, version.format);
+  version.path = module.exports.path(image.path, {
+    suffix: version.suffix || '',
+    format: version.format
+  });
+
   if (last) {
     cmd.push(version.path);
   } else {
