@@ -33,15 +33,16 @@ Resize a given source `image` into several `versions`.
   * **integer** `width` - image pixel width
   * **integer** `height` - image pixel height
   * **string** `path` - complete path to source image
-* **object[]** `versions` - Array of version objects
-  * **string** `suffix` - suffix for the resized image (ex. "-small")
-  * **integer** `maxWidth` - max width for resized image
-  * **integer** `maxHeight` - max height for resized image
-  * **integer** `quality` - quality for resized image
-  * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
-  * **boolean** `flatten` - used in conjunction with background
-  * **string** `background` - set background to transparent image
-  * **string** `format` - image format for resized image (ex. "png")
+* **object** `output` - image resize output config
+  * **object[]** `versions` - Array of version objects
+    * **string** `suffix` - suffix for the resized image (ex. "-small")
+    * **integer** `maxWidth` - max width for resized image
+    * **integer** `maxHeight` - max height for resized image
+    * **integer** `quality` - quality for resized image
+    * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
+    * **boolean** `flatten` - used in conjunction with background
+    * **string** `background` - set background to transparent image
+    * **string** `format` - image format for resized image (ex. "png")
 * **function** `cb` - callback function (**Error** `error`, **object[]** `versions`)
   * **Error** `error` - error output if command failed
   * **object[]** `versions` - resized image versions
@@ -56,19 +57,21 @@ var image = {
   height: 768
 };
 
-var versions = [{
-  suffix: '-thumb',
-  maxHeight: 150,
-  maxWidth: 150,
-  aspect: "3:2"
-},{
-  suffix: '-square',
-  maxHeight: 200,
-  maxWidth: 200,
-  aspect: "1:1"
-]};
+var output = {
+  versions: [{
+    suffix: '-thumb',
+    maxHeight: 150,
+    maxWidth: 150,
+    aspect: "3:2"
+  },{
+    suffix: '-square',
+    maxHeight: 200,
+    maxWidth: 200,
+    aspect: "1:1"
+  ]}
+};
 
-resize(image, versions, function(error, versions) {
+resize(image, output, function(error, versions) {
   if (error) { console.error(error); }
   console.log(versions[0].path); // /path/to/image-thumb.jpg
   console.log(versions[1].path); // /path/to/image-square.jpg

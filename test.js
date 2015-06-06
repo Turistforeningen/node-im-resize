@@ -71,49 +71,51 @@ describe('resize.cmdVersion()', function() {
 });
 
 describe('resize()', function() {
-  var versions;
+  var output;
 
   beforeEach(function() {
-    versions = [{
-      suffix: '-full',
-      maxHeight: 1920,
-      maxWidth: 1920
-    },{
-      suffix: '-1200',
-      maxHeight: 1200,
-      maxWidth: 1200,
-      aspect: "3:2"
-    },{
-      suffix: '-800',
-      maxHeight: 800,
-      maxWidth: 800,
-      aspect: "3:2"
-    },{
-      suffix: '-500',
-      maxHeight: 500,
-      maxWidth: 500,
-      aspect: "3:2"
-    },{
-      suffix: '-260',
-      maxHeight: 260,
-      maxWidth: 260,
-      aspect: "3:2"
-    },{
-      suffix: '-150',
-      maxHeight: 150,
-      maxWidth: 150,
-      aspect: "3:2"
-    },{
-      suffix: '-square-200',
-      maxHeight: 200,
-      maxWidth: 200,
-      aspect: "1:1"
-    },{
-      suffix: '-square-50',
-      maxHeight: 50,
-      maxWidth: 50,
-      aspect: "1:1"
-    }];
+    output = {
+      versions: [{
+        suffix: '-full',
+        maxHeight: 1920,
+        maxWidth: 1920
+      },{
+        suffix: '-1200',
+        maxHeight: 1200,
+        maxWidth: 1200,
+        aspect: "3:2"
+      },{
+        suffix: '-800',
+        maxHeight: 800,
+        maxWidth: 800,
+        aspect: "3:2"
+      },{
+        suffix: '-500',
+        maxHeight: 500,
+        maxWidth: 500,
+        aspect: "3:2"
+      },{
+        suffix: '-260',
+        maxHeight: 260,
+        maxWidth: 260,
+        aspect: "3:2"
+      },{
+        suffix: '-150',
+        maxHeight: 150,
+        maxWidth: 150,
+        aspect: "3:2"
+      },{
+        suffix: '-square-200',
+        maxHeight: 200,
+        maxWidth: 200,
+        aspect: "1:1"
+      },{
+        suffix: '-square-50',
+        maxHeight: 50,
+        maxWidth: 50,
+        aspect: "1:1"
+      }]
+    };
   });
 
   it('resisizes horizontal image', function(done) {
@@ -136,7 +138,7 @@ describe('resize()', function() {
       'assets/horizontal-square-50.jpg'
     ];
 
-    resize(image, versions, function(err, versions) {
+    resize(image, output, function(err, versions) {
       assert.ifError(err);
       assert(versions instanceof Array);
 
@@ -168,7 +170,7 @@ describe('resize()', function() {
       'assets/vertical-square-50.jpg'
     ];
 
-    resize(image, versions, function(err, versions) {
+    resize(image, output, function(err, versions) {
       assert.ifError(err);
       assert(versions instanceof Array);
 
@@ -189,10 +191,10 @@ describe('resize()', function() {
       height: 600
     };
 
-    for (var i = 0; i < versions.length; i++) {
-      versions[i].flatten = true;
-      versions[i].background = 'red';
-      versions[i].format = 'jpg';
+    for (var i = 0; i < output.versions.length; i++) {
+      output.versions[i].flatten = true;
+      output.versions[i].background = 'red';
+      output.versions[i].format = 'jpg';
     }
 
     var paths = [
@@ -206,7 +208,7 @@ describe('resize()', function() {
       'assets/transparent-square-50.jpg'
     ];
 
-    resize(image, versions, function(err, versions) {
+    resize(image, output, function(err, versions) {
       assert.ifError(err);
       assert(versions instanceof Array);
 
