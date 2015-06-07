@@ -112,6 +112,31 @@ describe('resize.cmd()', function() {
     assert.equal(output.versions[0].path, 'assets/im-horizontal-full.jpg');
     assert.equal(output.versions[1].path, 'assets/im-horizontal-1200.jpg');
   });
+
+  it('sets default quality to each version', function() {
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 80);
+    assert.equal(output.versions[1].quality, 80);
+  });
+
+  it('sets global quality to each version', function() {
+    output.quality = 20;
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 20);
+    assert.equal(output.versions[1].quality, 20);
+  });
+
+  it('preserves local version quality', function() {
+    output.quality = 30;
+    output.versions[1].quality = 99;
+
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 30);
+    assert.equal(output.versions[1].quality, 99);
+  });
 });
 
 describe('resize.cmdVersion()', function() {
