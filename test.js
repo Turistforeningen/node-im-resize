@@ -101,11 +101,17 @@ describe('resize.cmd()', function() {
     output.path = '/tmp';
     resize.cmd(image, output);
 
-    for (var i = 0; i < output.versions.length; i++) {
-      assert.equal(output.versions[i].path.substr(0, 5), '/tmp/');
-    }
+    assert.equal(output.versions[0].path, '/tmp/horizontal-full.jpg');
+    assert.equal(output.versions[1].path, '/tmp/horizontal-1200.jpg');
   });
 
+  it('sets global prefix to each version', function() {
+    output.prefix = 'im-';
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].path, 'assets/im-horizontal-full.jpg');
+    assert.equal(output.versions[1].path, 'assets/im-horizontal-1200.jpg');
+  });
 });
 
 describe('resize.cmdVersion()', function() {
