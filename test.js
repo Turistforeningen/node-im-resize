@@ -137,6 +137,29 @@ describe('resize.cmd()', function() {
     assert.equal(output.versions[0].quality, 30);
     assert.equal(output.versions[1].quality, 99);
   });
+
+  it('returns convert command', function() {
+    var cmd = resize.cmd(image, output);
+    assert.equal(cmd, [
+      // original image
+      'convert ./assets/horizontal.jpg',
+      '-strip',
+      '-write mpr:./assets/horizontal.jpg +delete',
+
+      // version[0]
+      'mpr:./assets/horizontal.jpg',
+      '-quality 80',
+      '-resize "1920x1920"',
+      '-write assets/horizontal-full.jpg +delete',
+
+      // version[1]
+      'mpr:./assets/horizontal.jpg',
+      '-quality 80',
+      '-crop "3936x2623+624+0"',
+      '-resize "1200x1200"',
+      'assets/horizontal-1200.jpg'
+    ].join(' '));
+  });
 });
 
 describe('resize.cmdVersion()', function() {
