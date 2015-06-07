@@ -35,6 +35,7 @@ Resize a given source `image` into several `versions`.
   * **string** `path` - complete path to source image
 * **object** `output` - image resize output config
   * **string** `prefix` image versions name prefix (default `""`)
+  * **string** `path` image versions directory path
   * **integrer** `quality` - global version quality (default `80`)
   * **object[]** `versions` - array of version objects
     * **string** `suffix` - suffix for the resized image (ex. `-small`)

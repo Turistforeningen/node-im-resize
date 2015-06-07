@@ -39,6 +39,16 @@ describe('resize.path()', function() {
     var path = resize.path('/foo/bar/baz.jpg', {prefix: 'prefix-', suffix: ''});
     assert.equal(path, '/foo/bar/prefix-baz.jpg');
   });
+
+  it('returns new path with custom directory', function() {
+    var path = resize.path('/foo/bar/baz.jpg', {
+      prefix: 'im-',
+      suffix: '',
+      path: '/tmp'
+    });
+
+    assert.equal(path, '/tmp/im-baz.jpg');
+  });
 });
 
 describe('resize.crop()', function() {
@@ -63,46 +73,146 @@ describe('resize.crop()', function() {
   });
 });
 
-describe('resize.cmd()', function() { });
+describe('resize.cmd()', function() {
+  var output, image;
+
+  beforeEach(function() {
+    image = {
+      path: './assets/horizontal.jpg',
+      width: 5184,
+      height: 2623
+    };
+
+    output = {
+      versions: [{
+        suffix: '-full',
+        maxHeight: 1920,
+        maxWidth: 1920
+      },{
+        suffix: '-1200',
+        maxHeight: 1200,
+        maxWidth: 1200,
+        aspect: "3:2"
+      }]
+    };
+  });
+
+  it('sets global path to each version', function() {
+    output.path = '/tmp';
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].path, '/tmp/horizontal-full.jpg');
+    assert.equal(output.versions[1].path, '/tmp/horizontal-1200.jpg');
+  });
+
+  it('sets global prefix to each version', function() {
+    output.prefix = 'im-';
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].path, 'assets/im-horizontal-full.jpg');
+    assert.equal(output.versions[1].path, 'assets/im-horizontal-1200.jpg');
+  });
+
+  it('sets default quality to each version', function() {
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 80);
+    assert.equal(output.versions[1].quality, 80);
+  });
+
+  it('sets global quality to each version', function() {
+    output.quality = 20;
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 20);
+    assert.equal(output.versions[1].quality, 20);
+  });
+
+  it('preserves local version quality', function() {
+    output.quality = 30;
+    output.versions[1].quality = 99;
+
+    resize.cmd(image, output);
+
+    assert.equal(output.versions[0].quality, 30);
+    assert.equal(output.versions[1].quality, 99);
+  });
+
+  it('returns convert command', function() {
+    var cmd = resize.cmd(image, output);
+    assert.equal(cmd, [
+      // original image
+      'convert ./assets/horizontal.jpg',
+      '-strip',
+      '-write mpr:./assets/horizontal.jpg +delete',
+
+      // version[0]
+      'mpr:./assets/horizontal.jpg',
+      '-quality 80',
+      '-resize "1920x1920"',
+      '-write assets/horizontal-full.jpg +delete',
+
+      // version[1]
+      'mpr:./assets/horizontal.jpg',
+      '-quality 80',
+      '-crop "3936x2623+624+0"',
+      '-resize "1200x1200"',
+      'assets/horizontal-1200.jpg'
+    ].join(' '));
+  });
+});
 
 describe('resize.cmdVersion()', function() {
-  it('returns convert command for version', function() {
-    var image = {
+  var image, version;
+
+  beforeEach(function() {
+    image = {
       path: './a.jpg',
       width: 2000,
       height: 1000
     };
 
-    var version = {
-      prefix: '',
-      suffix: '-b',
+    version = {
+      path: 'a-b.jpg',
       maxWidth: 500,
       maxHeight: 500
     };
+  });
 
+  it('returns convert command for version', function() {
     var cmd = resize.cmdVersion(image, version);
     var out = 'mpr:./a.jpg -resize "500x500" -write a-b.jpg +delete';
 
     assert.equal(cmd, out);
   });
 
-  it('sets custom quality if specified', function() {
-    var image = {
-      path: './a.jpg',
-      width: 2000,
-      height: 1000
-    };
+  it('returns convert command for last version', function() {
+    var cmd = resize.cmdVersion(image, version, true);
+    var out = 'mpr:./a.jpg -resize "500x500" a-b.jpg';
 
-    var version = {
-      prefix: '',
-      suffix: '-b',
-      quality: 50,
-      maxWidth: 500,
-      maxHeight: 500
-    };
+    assert.equal(cmd, out);
+  });
+
+  it('sets quality if specified', function() {
+    version.quality = 50;
 
     var cmd = resize.cmdVersion(image, version);
     var out = 'mpr:./a.jpg -quality 50 -resize "500x500" -write a-b.jpg +delete';
+
+    assert.equal(cmd, out);
+  });
+
+  it('sets crop if aspect ratio is defined', function() {
+    version.aspect = '4:3';
+
+    var cmd = resize.cmdVersion(image, version);
+    var out = [
+      'mpr:./a.jpg',
+      '-crop "1334x1000+333+0"',
+      '-resize "500x500"',
+      '-write a-b.jpg',
+      '+delete'
+    ].join(' ');
 
     assert.equal(cmd, out);
   });
