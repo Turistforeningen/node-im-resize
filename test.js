@@ -39,6 +39,16 @@ describe('resize.path()', function() {
     var path = resize.path('/foo/bar/baz.jpg', {prefix: 'prefix-', suffix: ''});
     assert.equal(path, '/foo/bar/prefix-baz.jpg');
   });
+
+  it('returns new path with custom directory', function() {
+    var path = resize.path('/foo/bar/baz.jpg', {
+      prefix: 'im-',
+      suffix: '',
+      path: '/tmp'
+    });
+
+    assert.equal(path, '/tmp/im-baz.jpg');
+  });
 });
 
 describe('resize.crop()', function() {
@@ -63,7 +73,40 @@ describe('resize.crop()', function() {
   });
 });
 
-describe('resize.cmd()', function() { });
+describe('resize.cmd()', function() {
+  var output, image;
+
+  beforeEach(function() {
+    image = {
+      path: './assets/horizontal.jpg',
+      width: 5184,
+      height: 2623
+    };
+
+    output = {
+      versions: [{
+        suffix: '-full',
+        maxHeight: 1920,
+        maxWidth: 1920
+      },{
+        suffix: '-1200',
+        maxHeight: 1200,
+        maxWidth: 1200,
+        aspect: "3:2"
+      }]
+    };
+  });
+
+  it('sets global path to each version', function() {
+    output.path = '/tmp';
+    resize.cmd(image, output);
+
+    for (var i = 0; i < output.versions.length; i++) {
+      assert.equal(output.versions[i].path.substr(0, 5), '/tmp/');
+    }
+  });
+
+});
 
 describe('resize.cmdVersion()', function() {
   it('returns convert command for version', function() {
@@ -74,8 +117,7 @@ describe('resize.cmdVersion()', function() {
     };
 
     var version = {
-      prefix: '',
-      suffix: '-b',
+      path: 'a-b.jpg',
       maxWidth: 500,
       maxHeight: 500
     };
@@ -94,8 +136,7 @@ describe('resize.cmdVersion()', function() {
     };
 
     var version = {
-      prefix: '',
-      suffix: '-b',
+      path: 'a-b.jpg',
       quality: 50,
       maxWidth: 500,
       maxHeight: 500

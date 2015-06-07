@@ -48,7 +48,7 @@ module.exports.crop = function(image, ratio) {
  * @return string path
  */
 module.exports.path = function(path, opts) {
-  var dir = dirname(path);
+  var dir = opts.path || dirname(path);
   var ext = extname(path);
   var base = basename(path, ext);
 
@@ -76,9 +76,14 @@ module.exports.cmd = function(image, output) {
     var version = output.versions[i];
     var last = (i === output.versions.length-1);
 
-    version.prefix = version.prefix || output.prefix || '';
-    version.suffix = version.suffix || '';
     version.quality = version.quality || output.quality || 80;
+
+    version.path = module.exports.path(image.path, {
+      format: version.format,
+      path: output.path,
+      prefix: version.prefix || output.prefix || '',
+      suffix: version.suffix || ''
+    });
 
     cmd.push(module.exports.cmdVersion(image, version, last));
   }
@@ -126,12 +131,6 @@ module.exports.cmdVersion = function(image, version, last) {
   cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
 
   // -write
-  version.path = module.exports.path(image.path, {
-    prefix: version.prefix,
-    suffix: version.suffix,
-    format: version.format
-  });
-
   if (last) {
     cmd.push(version.path);
   } else {
