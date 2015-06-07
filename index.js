@@ -40,17 +40,17 @@ module.exports.crop = function(image, ratio) {
 /**
  * Get new path with suffix
  *
- * @param string path - image path
+ * @param string src - source image path
  * @param string opts - output path transformations
  *  * format
  *  * suffix
  *
  * @return string path
  */
-module.exports.path = function(path, opts) {
-  var dir = opts.path || dirname(path);
-  var ext = extname(path);
-  var base = basename(path, ext);
+module.exports.path = function(src, opts) {
+  var dir = opts.path || dirname(src);
+  var ext = extname(src);
+  var base = basename(src, ext);
 
   if (opts.format) {
     ext = '.' + opts.format;
