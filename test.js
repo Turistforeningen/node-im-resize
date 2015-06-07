@@ -182,7 +182,7 @@ describe('resize.cmdVersion()', function() {
     assert.equal(cmd, out);
   });
 
-  it('sets custom quality if specified', function() {
+  it('sets quality if specified', function() {
     var image = {
       path: './a.jpg',
       width: 2000,
