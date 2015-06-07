@@ -5,23 +5,39 @@ var resize = require('./index');
 
 describe('resize.path()', function() {
   it('returns new relative path with suffix', function() {
-    var path = resize.path('./foo.jpg', {suffix: '-bar'});
+    var path = resize.path('./foo.jpg', {prefix: '', suffix: '-bar'});
+
     assert.equal(path, 'foo-bar.jpg');
   });
 
   it('returns new relative path with custom format', function() {
-    var path = resize.path('./foo.jpg', {suffix: '-bar', format: 'png'});
+    var path = resize.path('./foo.jpg', {
+      prefix: '',
+      suffix: '-bar',
+      format: 'png'
+    });
+
     assert.equal(path, 'foo-bar.png');
   });
 
   it('returns new absolute path with suffix', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {suffix: '-bix'});
+    var path = resize.path('/foo/bar/baz.jpg', {prefix: '', suffix: '-bix'});
     assert.equal(path, '/foo/bar/baz-bix.jpg');
   });
 
   it('returns new absolute path with custom format', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {suffix: '-bix', format: 'png'});
+    var path = resize.path('/foo/bar/baz.jpg', {
+      prefix: '',
+      suffix: '-bix',
+      format: 'png'
+    });
+
     assert.equal(path, '/foo/bar/baz-bix.png');
+  });
+
+  it('returns new path with prefix', function() {
+    var path = resize.path('/foo/bar/baz.jpg', {prefix: 'prefix-', suffix: ''});
+    assert.equal(path, '/foo/bar/prefix-baz.jpg');
   });
 });
 
@@ -50,6 +66,26 @@ describe('resize.crop()', function() {
 describe('resize.cmd()', function() { });
 
 describe('resize.cmdVersion()', function() {
+  it('returns convert command for version', function() {
+    var image = {
+      path: './a.jpg',
+      width: 2000,
+      height: 1000
+    };
+
+    var version = {
+      prefix: '',
+      suffix: '-b',
+      maxWidth: 500,
+      maxHeight: 500
+    };
+
+    var cmd = resize.cmdVersion(image, version);
+    var out = 'mpr:./a.jpg -resize "500x500" -write a-b.jpg +delete';
+
+    assert.equal(cmd, out);
+  });
+
   it('sets custom quality if specified', function() {
     var image = {
       path: './a.jpg',
@@ -58,6 +94,7 @@ describe('resize.cmdVersion()', function() {
     };
 
     var version = {
+      prefix: '',
       suffix: '-b',
       quality: 50,
       maxWidth: 500,

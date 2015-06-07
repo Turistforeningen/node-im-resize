@@ -34,15 +34,17 @@ Resize a given source `image` into several `versions`.
   * **integer** `height` - image pixel height
   * **string** `path` - complete path to source image
 * **object** `output` - image resize output config
-  * **object[]** `versions` - Array of version objects
-    * **string** `suffix` - suffix for the resized image (ex. "-small")
+  * **string** `prefix` image versions name prefix (default `""`)
+  * **integrer** `quality` - global version quality (default `80`)
+  * **object[]** `versions` - array of version objects
+    * **string** `suffix` - suffix for the resized image (ex. `-small`)
     * **integer** `maxWidth` - max width for resized image
     * **integer** `maxHeight` - max height for resized image
-    * **integer** `quality` - quality for resized image
-    * **string** `ratio` - force aspectratio on resized image (ex. "4:3")
+    * **integer** `quality` - quality for resized image (default `80`)
+    * **string** `ratio` - force aspectratio on resized image (ex. `4:3`)
     * **boolean** `flatten` - used in conjunction with background
-    * **string** `background` - set background to transparent image
-    * **string** `format` - image format for resized image (ex. "png")
+    * **string** `background` - set background to transparent image (ex. `red`)
+    * **string** `format` - image format for resized image (ex. `png`)
 * **function** `cb` - callback function (**Error** `error`, **object[]** `versions`)
   * **Error** `error` - error output if command failed
   * **object[]** `versions` - resized image versions
