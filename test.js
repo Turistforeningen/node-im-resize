@@ -163,19 +163,23 @@ describe('resize.cmd()', function() {
 });
 
 describe('resize.cmdVersion()', function() {
-  it('returns convert command for version', function() {
-    var image = {
+  var image, version;
+
+  beforeEach(function() {
+    image = {
       path: './a.jpg',
       width: 2000,
       height: 1000
     };
 
-    var version = {
+    version = {
       path: 'a-b.jpg',
       maxWidth: 500,
       maxHeight: 500
     };
+  });
 
+  it('returns convert command for version', function() {
     var cmd = resize.cmdVersion(image, version);
     var out = 'mpr:./a.jpg -resize "500x500" -write a-b.jpg +delete';
 
@@ -183,18 +187,7 @@ describe('resize.cmdVersion()', function() {
   });
 
   it('sets quality if specified', function() {
-    var image = {
-      path: './a.jpg',
-      width: 2000,
-      height: 1000
-    };
-
-    var version = {
-      path: 'a-b.jpg',
-      quality: 50,
-      maxWidth: 500,
-      maxHeight: 500
-    };
+    version.quality = 50;
 
     var cmd = resize.cmdVersion(image, version);
     var out = 'mpr:./a.jpg -quality 50 -resize "500x500" -write a-b.jpg +delete';
