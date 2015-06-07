@@ -201,6 +201,21 @@ describe('resize.cmdVersion()', function() {
 
     assert.equal(cmd, out);
   });
+
+  it('sets crop if aspect ratio is defined', function() {
+    version.aspect = '4:3';
+
+    var cmd = resize.cmdVersion(image, version);
+    var out = [
+      'mpr:./a.jpg',
+      '-crop "1334x1000+333+0"',
+      '-resize "500x500"',
+      '-write a-b.jpg',
+      '+delete'
+    ].join(' ');
+
+    assert.equal(cmd, out);
+  });
 });
 
 describe('resize()', function() {
