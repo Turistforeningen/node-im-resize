@@ -34,6 +34,7 @@ Resize a given source `image` into several `versions`.
   * **integer** `height` - image pixel height
   * **string** `path` - complete path to source image
 * **object** `output` - image resize output config
+  * **string** `prefix` image versions name prefix (default `""`)
   * **object[]** `versions` - array of version objects
     * **string** `suffix` - suffix for the resized image (ex. `-small`)
     * **integer** `maxWidth` - max width for resized image

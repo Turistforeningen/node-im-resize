@@ -7,7 +7,7 @@ var join = require('path').join;
 var sprintf = require('util').format;
 
 module.exports = function(image, output, cb) {
-  var cmd = module.exports.cmd(image, output.versions);
+  var cmd = module.exports.cmd(image, output);
   exec(cmd, {timeout: 10000}, function(e, stdout, stderr) {
     if (e) { return cb(e); }
     if (stderr) { return cb(new Error(stderr)); }
@@ -56,7 +56,7 @@ module.exports.path = function(path, opts) {
     ext = '.' + opts.format;
   }
 
-  return join(dir, base + opts.suffix + ext);
+  return join(dir, opts.prefix + base + opts.suffix + ext);
 };
 
 /**
@@ -67,13 +67,19 @@ module.exports.path = function(path, opts) {
  *
  * @return string convert command
  */
-module.exports.cmd = function(image, versions) {
+module.exports.cmd = function(image, output) {
   var cmd = [
     sprintf('convert %s -strip -write mpr:%s +delete', image.path, image.path)
   ];
 
-  for (var i = 0; i < versions.length; i++) {
-    cmd.push(module.exports.cmdVersion(image, versions[i], i === versions.length-1));
+  for (var i = 0; i < output.versions.length; i++) {
+    var version = output.versions[i];
+    var last = (i === output.versions.length-1);
+
+    version.prefix = version.prefix || output.prefix || '';
+    version.suffix = version.suffix || '';
+
+    cmd.push(module.exports.cmdVersion(image, version, last));
   }
 
   return cmd.join(' ');
@@ -118,7 +124,8 @@ module.exports.cmdVersion = function(image, version, last) {
 
   // -write
   version.path = module.exports.path(image.path, {
-    suffix: version.suffix || '',
+    prefix: version.prefix,
+    suffix: version.suffix,
     format: version.format
   });
 
