@@ -78,6 +78,7 @@ module.exports.cmd = function(image, output) {
 
     version.prefix = version.prefix || output.prefix || '';
     version.suffix = version.suffix || '';
+    version.quality = version.quality || output.quality || 80;
 
     cmd.push(module.exports.cmdVersion(image, version, last));
   }
@@ -101,7 +102,9 @@ module.exports.cmdVersion = function(image, version, last) {
   cmd.push(sprintf('mpr:%s', image.path));
 
   // -quality
-  cmd.push(sprintf('-quality %d', version.quality || 80));
+  if (version.quality) {
+    cmd.push(sprintf('-quality %d', version.quality));
+  }
 
   // -background
   if (version.background) {
