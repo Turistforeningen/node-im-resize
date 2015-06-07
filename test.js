@@ -186,6 +186,13 @@ describe('resize.cmdVersion()', function() {
     assert.equal(cmd, out);
   });
 
+  it('returns convert command for last version', function() {
+    var cmd = resize.cmdVersion(image, version, true);
+    var out = 'mpr:./a.jpg -resize "500x500" a-b.jpg';
+
+    assert.equal(cmd, out);
+  });
+
   it('sets quality if specified', function() {
     version.quality = 50;
 
