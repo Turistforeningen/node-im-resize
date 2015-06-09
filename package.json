@@ -1,6 +1,6 @@
 {
   "name": "im-resize",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Efficient image resize with multiple versions support",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,6 @@
     "mocha": "^2.2.4"
   },
   "dependencies": {
-    "aspectratio": "^2.0.0"
+    "aspectratio": "^2.0.1"
   }
 }
