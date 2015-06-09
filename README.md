@@ -25,7 +25,7 @@ npm install im-resize --save
 var resize = require('im-resize');
 ```
 
-### resize(**object** `image`, **object[]** `versions`, **function** `cb`)
+### resize(**object** `image`, **object** `output`, **function** `cb`)
 
 Resize a given source `image` into several `versions`.
 
