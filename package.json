@@ -29,6 +29,6 @@
     "mocha": "^2.2.4"
   },
   "dependencies": {
-    "aspectratio": "^2.0.1"
+    "aspectratio": "^2.0.0"
   }
 }
