@@ -1,6 +1,6 @@
 {
   "name": "im-resize",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Efficient image resize with multiple versions support",
   "main": "index.js",
   "scripts": {
