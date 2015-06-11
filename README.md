@@ -42,7 +42,7 @@ Resize a given source `image` into several `versions`.
     * **integer** `maxWidth` - max width for resized image
     * **integer** `maxHeight` - max height for resized image
     * **integer** `quality` - quality for resized image (default `80`)
-    * **string** `ratio` - force aspectratio on resized image (ex. `4:3`)
+    * **string** `aspect` - force aspectratio on resized image (ex. `4:3`)
     * **boolean** `flatten` - used in conjunction with background
     * **string** `background` - set background to transparent image (ex. `red`)
     * **string** `format` - image format for resized image (ex. `png`)
