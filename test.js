@@ -278,23 +278,26 @@ describe('resize()', function() {
       height: 2623
     };
 
-    var paths = [
-      'assets/horizontal-full.jpg',
-      'assets/horizontal-1200.jpg',
-      'assets/horizontal-800.jpg',
-      'assets/horizontal-500.jpg',
-      'assets/horizontal-260.jpg',
-      'assets/horizontal-150.jpg',
-      'assets/horizontal-square-200.jpg',
-      'assets/horizontal-square-50.jpg'
-    ];
+    var checksum = {
+      'assets/horizontal-full.jpg'      : '1a97483f4dfc21ea77217731a0f1908f8edeec22',
+      'assets/horizontal-1200.jpg'      : '54f1be17d4ffac0cb23802f1c04e783594662a8a',
+      'assets/horizontal-800.jpg'       : '9ebf00a2d96361720dcbcb66af14689d3d51269f',
+      'assets/horizontal-500.jpg'       : '58b09dc1f4ecf22427cc73ffd7b8ef2194fff4bb',
+      'assets/horizontal-260.jpg'       : '33437a2300f7d991c439d532075e211aad962a78',
+      'assets/horizontal-150.jpg'       : 'ad5957669f0774cd66be76414dcbe6b0d789367d',
+      'assets/horizontal-square-200.jpg': '576b72b83f486cfc684f459670e912310427a6a5',
+      'assets/horizontal-square-50.jpg' : 'cc0291eb853ceba62b009626ae7a0e68562e93de'
+    };
 
     resize(image, output, function(err, versions) {
       assert.ifError(err);
       assert(versions instanceof Array);
 
       for(var i = 0; i < versions.length; i++) {
-        assert.equal(versions[i].path, paths[i]);
+        var file = fs.readFileSync(versions[i].path);
+        var sha = crypto.createHash('sha1').update(file).digest('hex');
+
+        assert.equal(sha, checksum[versions[i].path]);
       }
 
       done();
@@ -310,23 +313,28 @@ describe('resize()', function() {
       height: 3456
     };
 
-    var paths = [
-      'assets/vertical-full.jpg',
-      'assets/vertical-1200.jpg',
-      'assets/vertical-800.jpg',
-      'assets/vertical-500.jpg',
-      'assets/vertical-260.jpg',
-      'assets/vertical-150.jpg',
-      'assets/vertical-square-200.jpg',
-      'assets/vertical-square-50.jpg'
-    ];
+    var checksum = {
+      'assets/vertical-full.jpg'      : '709746db3a56f66066f846e273db78dee60d0311',
+      'assets/vertical-1200.jpg'      : '6f1f88a98e43377728864a42ad1123126b66c1f7',
+      'assets/vertical-800.jpg'       : '95fbe34e98dd7839b1bde9400f4c7a6784e408b3',
+      'assets/vertical-500.jpg'       : '474242606e782deafe7af976f23513697b622cf4',
+      'assets/vertical-260.jpg'       : '4e49f570413c9f15156b1cf99febe9054e2f294f',
+      'assets/vertical-150.jpg'       : '9d8ec5975d548ee0b2f6f83c5f896c0fcd5d3a88',
+      'assets/vertical-square-200.jpg': '1d2a9b581b7f989e44384f4eabde1fc5085d20ad',
+      'assets/vertical-square-50.jpg' : '33e038f5fbcbc92991d68e343733bb0735286243'
+    };
 
     resize(image, output, function(err, versions) {
       assert.ifError(err);
+
       assert(versions instanceof Array);
+      assert.equal(versions.length, output.versions.length);
 
       for(var i = 0; i < versions.length; i++) {
-        assert.equal(versions[i].path, paths[i]);
+        var file = fs.readFileSync(versions[i].path);
+        var sha = crypto.createHash('sha1').update(file).digest('hex');
+
+        assert.equal(sha, checksum[versions[i].path]);
       }
 
       done();
@@ -348,23 +356,28 @@ describe('resize()', function() {
       output.versions[i].format = 'jpg';
     }
 
-    var paths = [
-      'assets/transparent-full.jpg',
-      'assets/transparent-1200.jpg',
-      'assets/transparent-800.jpg',
-      'assets/transparent-500.jpg',
-      'assets/transparent-260.jpg',
-      'assets/transparent-150.jpg',
-      'assets/transparent-square-200.jpg',
-      'assets/transparent-square-50.jpg'
-    ];
+    var checksum = {
+      'assets/transparent-full.jpg'      : '78e3647bc9f86f3e0a8a0a25dcc60fba519c29b9',
+      'assets/transparent-1200.jpg'      : '35069de49846815381830b4c46ab90f75eba43aa',
+      'assets/transparent-800.jpg'       : '017ec8afb9a81eae00132105da9cd6ea4083011c',
+      'assets/transparent-500.jpg'       : 'c0705376d473724384e6ed30a1305683023780e9',
+      'assets/transparent-260.jpg'       : '1ccf58141dfa60fe2cc74f024a9df82172e235d4',
+      'assets/transparent-150.jpg'       : 'f46d2e15c618b65d9e082f605e894d5ebd6a5450',
+      'assets/transparent-square-200.jpg': '012230141cb127947cfe958c452560b7a50d2425',
+      'assets/transparent-square-50.jpg' : 'ea8a03a6f9acfd1c5170c4b5d382c84aa3b304dc'
+    };
 
     resize(image, output, function(err, versions) {
       assert.ifError(err);
+
       assert(versions instanceof Array);
+      assert.equal(versions.length, output.versions.length);
 
       for(var i = 0; i < versions.length; i++) {
-        assert.equal(versions[i].path, paths[i]);
+        var file = fs.readFileSync(versions[i].path);
+        var sha = crypto.createHash('sha1').update(file).digest('hex');
+
+        assert.equal(sha, checksum[versions[i].path]);
       }
 
       done();
