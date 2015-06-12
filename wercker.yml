@@ -4,14 +4,14 @@ build:
     - jshint:
         version: 2.6
 
-    - npm-install
-    - npm-test
-
     - script:
         name: echo nodejs information
         code: |
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
+
+    - npm-install
+    - npm-test
 
   after-steps:
     - turistforeningen/slack-notifier:
