@@ -1,6 +1,8 @@
 /*jshint laxbreak:true */
 
 var assert = require('assert');
+var crypto = require('crypto');
+var fs = require('fs');
 var resize = require('./index');
 
 describe('resize.path()', function() {
@@ -143,6 +145,7 @@ describe('resize.cmd()', function() {
     assert.equal(cmd, [
       // original image
       'convert ./assets/horizontal.jpg',
+      '-auto-orient',
       '-strip',
       '-write mpr:./assets/horizontal.jpg +delete',
 
@@ -362,6 +365,43 @@ describe('resize()', function() {
 
       for(var i = 0; i < versions.length; i++) {
         assert.equal(versions[i].path, paths[i]);
+      }
+
+      done();
+    });
+  });
+
+  it('auto-rotates rotated image', function(done) {
+    this.timeout(10000);
+
+    var image = {
+      path: './assets/autorotate.jpg',
+      width: 3264,
+      height: 2448
+    };
+
+    var checksum = {
+      'assets/autorotate-full.jpg'      : 'efe10ac17cae71bd28c316728d6d29eeacc11fd8',
+      'assets/autorotate-1200.jpg'      : 'e8f5b75aa6c9859426c1d652d57a053444f897ff',
+      'assets/autorotate-800.jpg'       : '081df1cc1a3d7d76a0762f0d586dbecff221a25c',
+      'assets/autorotate-500.jpg'       : 'c5437d9b2dbbf791931ca9089020c78ac8fd02a3',
+      'assets/autorotate-260.jpg'       : 'a9b811a19fb078264e655c0c3c01acffda8d192e',
+      'assets/autorotate-150.jpg'       : 'd837d5fb4239f9fe1e3566df34906e3f8d654275',
+      'assets/autorotate-square-200.jpg': '24efb279a78b0c33a8715215d6f976c1f086573a',
+      'assets/autorotate-square-50.jpg' : 'f716e975f6269c3b9649a04d4144c5481265169c'
+    };
+
+    resize(image, output, function(err, versions) {
+      assert.ifError(err);
+
+      assert(versions instanceof Array);
+      assert.equal(versions.length, output.versions.length);
+
+      for(var i = 0; i < versions.length; i++) {
+        var file = fs.readFileSync(versions[i].path);
+        var sha = crypto.createHash('sha1').update(file).digest('hex');
+
+        assert.equal(sha, checksum[versions[i].path]);
       }
 
       done();
