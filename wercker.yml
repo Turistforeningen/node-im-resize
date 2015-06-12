@@ -1,4 +1,4 @@
-box: wercker/nodejs
+box: starefossen/iojs-imagemagick:1-6
 build:
   steps:
     - jshint:
