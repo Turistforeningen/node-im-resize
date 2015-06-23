@@ -1,4 +1,4 @@
-var exec = require('child_process').exec, child;
+var exec = require('child_process').exec;
 var aspect = require('aspectratio');
 var dirname = require('path').dirname;
 var basename = require('path').basename;
@@ -27,7 +27,7 @@ module.exports = function(image, output, cb) {
 module.exports.crop = function(image, ratio) {
   if (!ratio) { return false; }
 
-  var g = aspect.fixed(image.width, image.height, ratio);
+  var g = aspect.crop(image.width, image.height, ratio);
 
   // Check if the image already has the decired aspectratio.
   if (g[0] === 0 && g[1] === 0) {
