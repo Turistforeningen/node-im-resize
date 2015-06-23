@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js",
+    "hint": "./node_modules/.bin/jshint index.js test.js",
     "watch": "./node_modules/.bin/mocha -w test.js"
   },
   "repository": {
@@ -26,6 +27,7 @@
   },
   "homepage": "https://github.com/Turistforeningen/node-im-resize",
   "devDependencies": {
+    "jshint": "~2",
     "mocha": "~2"
   },
   "dependencies": {

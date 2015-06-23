@@ -1,9 +1,6 @@
 box: starefossen/iojs-imagemagick:1-6
 build:
   steps:
-    #- jshint:
-    #    version: 2.6
-
     - script:
         name: echo nodejs information
         code: |
@@ -16,6 +13,12 @@ build:
             convert --version
 
     - npm-install
+
+    - script:
+        name: jshint
+        code: |
+            npm run hint
+
     - npm-test
 
   after-steps:
