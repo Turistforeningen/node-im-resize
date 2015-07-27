@@ -10,7 +10,7 @@ build:
     - script:
         name: echo imagemagick information
         code: |
-            convert --version
+            echo convert --version
 
     - npm-install
 
