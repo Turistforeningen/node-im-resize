@@ -321,21 +321,21 @@ describe('resize()', function() {
 
     var image = {
       path: './assets/vertical.jpg',
-      width: 1929,
-      height: 3456
+      width: 2448,
+      height:3264
     };
 
     var checksum = {
-      'assets/vertical-1200.jpg'            : '6f1f88a98e43377728864a42ad1123126b66c1f7',
-      'assets/vertical-150.jpg'             : '9d8ec5975d548ee0b2f6f83c5f896c0fcd5d3a88',
-      'assets/vertical-260.jpg'             : '4e49f570413c9f15156b1cf99febe9054e2f294f',
-      'assets/vertical-500.jpg'             : '474242606e782deafe7af976f23513697b622cf4',
-      'assets/vertical-800.jpg'             : '95fbe34e98dd7839b1bde9400f4c7a6784e408b3',
-      'assets/vertical-full.jpg'            : '709746db3a56f66066f846e273db78dee60d0311',
-      'assets/vertical-horizontal-500.jpg'  : 'a70eff22ec8c4a12ab128560463280eb13edb2be',
-      'assets/vertical-square-200.jpg'      : '1d2a9b581b7f989e44384f4eabde1fc5085d20ad',
-      'assets/vertical-square-50.jpg'       : '33e038f5fbcbc92991d68e343733bb0735286243',
-      'assets/vertical-vertical-500.jpg'    : '474242606e782deafe7af976f23513697b622cf4'
+      'assets/vertical-1200.jpg'          : '0a2b3e842d15aab4231e4ff41f46d6b8a45356da',
+      'assets/vertical-150.jpg'           : '0224e40c72f3dac7361a5eab2d9b08616ea42acd',
+      'assets/vertical-260.jpg'           : 'e8603d6d2654ed589f45d7c485eafdd91bcc8063',
+      'assets/vertical-500.jpg'           : '5335938e3c0599144a514a0014cdf882fc5fe975',
+      'assets/vertical-800.jpg'           : '9d5c719cce45f66295e11c4853c100fba6e59b49',
+      'assets/vertical-full.jpg'          : '654e1bce7a1f2faebd7359009c1f4614823d0148',
+      'assets/vertical-horizontal-500.jpg': '587da3f047218e4dcef5f5ea75525c485e74f4bc',
+      'assets/vertical-square-200.jpg'    : '00d8cd18a861787a02f025b81bf9a7a8ad80e377',
+      'assets/vertical-square-50.jpg'     : '748d2dad7f8135167db297b4f9dec480e1cd4a1a',
+      'assets/vertical-vertical-500.jpg'  : '5335938e3c0599144a514a0014cdf882fc5fe975'
     };
 
     resize(image, output, function(err, versions) {
