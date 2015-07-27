@@ -400,6 +400,45 @@ describe('resize()', function() {
     });
   });
 
+  it('scales up small image', function(done) {
+    this.timeout(10000);
+
+    var image = {
+      path: './assets/small.jpg',
+      width: 454,
+      height: 302
+    };
+
+    var checksum = {
+      'assets/small-full.jpg'          : '01cbbab9aef8891a56f2cf3a021e4e59b0b6f4de',
+      'assets/small-1200.jpg'          : '718c033c6e2d3a001e741ac144a464f4b32b4524',
+      'assets/small-800.jpg'           : '2ed95b3153288fb3d81b3adffa69063efd48e9e6',
+      'assets/small-500.jpg'           : '02a4824a773aa174af4827ea41f89024073ff915',
+      'assets/small-260.jpg'           : '82d417cac5df64e62a380e9d6067d5230f35c5f3',
+      'assets/small-150.jpg'           : 'f59cd76f9ba1d3a947a3cbb6682014702f50d51d',
+      'assets/small-horizontal-500.jpg': '02a4824a773aa174af4827ea41f89024073ff915',
+      'assets/small-vertical-500.jpg'  : '1660d8ea52a994721641322716b1cc194c04d97e',
+      'assets/small-square-200.jpg'    : '37aba56af39aebfa23650441f5068aa03e2f1480',
+      'assets/small-square-50.jpg'     : 'b583b4f4ae755b3ae54fa669c04d9cefc751122a'
+    };
+
+    resize(image, output, function(err, versions) {
+      assert.ifError(err);
+
+      assert(versions instanceof Array);
+      assert.equal(versions.length, output.versions.length);
+
+      for(var i = 0; i < versions.length; i++) {
+        var file = fs.readFileSync(versions[i].path);
+        var sha = crypto.createHash('sha1').update(file).digest('hex');
+
+        assert.equal(sha, checksum[versions[i].path]);
+      }
+
+      done();
+    });
+  });
+
   it('auto-rotates rotated image', function(done) {
     this.timeout(10000);
 
