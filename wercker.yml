@@ -12,7 +12,9 @@ build:
         code: |
             echo convert --version
 
-    - npm-install
+    - script:
+        name: npm install
+        code: npm install
 
     - script:
         name: jshint
