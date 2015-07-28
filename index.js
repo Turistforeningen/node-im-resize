@@ -46,6 +46,14 @@ module.exports.crop = function(image, ratio) {
   }
 };
 
+/**
+ * Get resize geometry for max width and/or height
+ *
+ * @param object crop - image crop object
+ * @param object versin - image version object
+ *
+ * @return string geometry; null if no resize applies
+ */
 module.exports.resize = function(crop, version) {
   var maxW = version.maxWidth;
   var maxH = version.maxHeight;
