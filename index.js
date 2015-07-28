@@ -62,7 +62,7 @@ module.exports.resize = function(crop, version) {
   } else {
     return null;
   }
-}
+};
 
 /**
  * Get new path with suffix
