@@ -1,4 +1,4 @@
-box: starefossen/iojs-imagemagick:1-6
+box: starefossen/iojs-imagemagick:latest
 build:
   steps:
     - script:
