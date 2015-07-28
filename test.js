@@ -91,6 +91,46 @@ describe('resize.crop()', function() {
   });
 });
 
+describe('resize.resize()', function() {
+  var crop = { width: 800, height: 533 };
+
+  it('returns null for no maxWidth or maxHeight', function() {
+    var version  = {};
+    var geometry = resize.resize(crop, version);
+
+    assert.equal(geometry, null);
+  });
+
+  it('returns geometry for only maxWidth', function() {
+    var version  = { maxWidth: 500 };
+    var geometry = resize.resize(crop, version);
+
+    assert.equal(geometry, '500');
+  });
+
+  it('returns geometry for only maxHeight', function() {
+    var version  = { maxHeight: 500 };
+    var geometry = resize.resize(crop, version);
+
+    assert.equal(geometry, 'x500');
+  });
+
+  it('returns geometry for maxWidth and maxHeight', function() {
+    var version  = { maxWidth: 500, maxHeight: 500 };
+    var geometry = resize.resize(crop, version);
+
+    assert.equal(geometry, '500x500');
+  });
+
+  it('sets width and height on version object', function() {
+    var version  = { maxWidth: 500, maxHeight: 500 };
+    var geometry = resize.resize(crop, version);
+
+    assert.equal(version.width, 500);
+    assert.equal(version.height, 333);
+  });
+});
+
 describe('resize.cmd()', function() {
   var output, image;
 

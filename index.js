@@ -43,6 +43,27 @@ module.exports.crop = function(image, ratio) {
   }
 };
 
+module.exports.resize = function(crop, version) {
+  var maxW = version.maxWidth;
+  var maxH = version.maxHeight;
+
+  var resize = aspect.resize(crop.width, crop.height, maxW, maxH);
+
+  // Update version object
+  version.width  = resize[0];
+  version.height = resize[1];
+
+  if (maxW && maxH) {
+    return maxW + 'x' + maxH;
+  } else if (maxW) {
+    return '' + maxW;
+  } else if (maxH) {
+    return 'x' + maxH;
+  } else {
+    return null;
+  }
+}
+
 /**
  * Get new path with suffix
  *
@@ -134,7 +155,11 @@ module.exports.cmdVersion = function(image, version, last) {
   }
 
   // -resize
-  cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
+  // http://www.imagemagick.org/script/command-line-processing.php#geometry
+  var resize = module.exports.resize(crop, version);
+  if (resize) {
+    cmd.push(sprintf('-resize "%s"', resize));
+  }
 
   // -write
   if (last) {
