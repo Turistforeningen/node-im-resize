@@ -19,21 +19,59 @@ module.exports = function(image, output, cb) {
 /**
  * Get cropped geometry for given aspectratio
  *
- * @param string image - original image metadata
+ * @param object image - original image metadata
  * @param string ratio - new aspect ratio
  *
- * @return string geometry; false if no crop applies
+ * @return object geometry
+ *  - string geometry - crop geometry; or null
+ *  - number width    - image version height
+ *  - number height   - image version width
  */
 module.exports.crop = function(image, ratio) {
-  if (!ratio) { return false; }
+  if (!ratio) {
+    return { geometry: null, width: image.width, height: image.height };
+  }
 
   var g = aspect.crop(image.width, image.height, ratio);
 
   // Check if the image already has the decired aspectratio.
   if (g[0] === 0 && g[1] === 0) {
-    return false;
+    return { geometry: null, width: image.width, height: image.height };
   } else {
-    return g[2] + 'x' + g[3]  + '+' + g[0] + '+' + g[1];
+    return {
+      geometry: sprintf('%dx%d+%d+%d', g[2], g[3], g[0], g[1]),
+      width: g[2],
+      height: g[3]
+    };
+  }
+};
+
+/**
+ * Get resize geometry for max width and/or height
+ *
+ * @param object crop - image crop object
+ * @param object versin - image version object
+ *
+ * @return string geometry; null if no resize applies
+ */
+module.exports.resize = function(crop, version) {
+  var maxW = version.maxWidth;
+  var maxH = version.maxHeight;
+
+  var resize = aspect.resize(crop.width, crop.height, maxW, maxH);
+
+  // Update version object
+  version.width  = resize[0];
+  version.height = resize[1];
+
+  if (maxW && maxH) {
+    return maxW + 'x' + maxH;
+  } else if (maxW) {
+    return '' + maxW;
+  } else if (maxH) {
+    return 'x' + maxH;
+  } else {
+    return null;
   }
 };
 
@@ -69,7 +107,9 @@ module.exports.path = function(src, opts) {
  */
 module.exports.cmd = function(image, output) {
   var cmd = [
-    sprintf('convert %s -auto-orient -strip -write mpr:%s +delete', image.path, image.path)
+    sprintf(
+      'convert %s -auto-orient -strip -write mpr:%s +delete', image.path, image.path
+    )
   ];
 
   for (var i = 0; i < output.versions.length; i++) {
@@ -123,12 +163,16 @@ module.exports.cmdVersion = function(image, version, last) {
 
   // -crop
   var crop = module.exports.crop(image, version.aspect);
-  if (crop) {
-    cmd.push(sprintf('-crop "%s"', crop));
+  if (crop.geometry) {
+    cmd.push(sprintf('-crop "%s"', crop.geometry));
   }
 
   // -resize
-  cmd.push(sprintf('-resize "%dx%d"', version.maxWidth, version.maxHeight));
+  // http://www.imagemagick.org/script/command-line-processing.php#geometry
+  var resize = module.exports.resize(crop, version);
+  if (resize) {
+    cmd.push(sprintf('-resize "%s"', resize));
+  }
 
   // -write
   if (last) {

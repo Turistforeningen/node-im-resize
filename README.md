@@ -56,8 +56,8 @@ Resize a given source `image` into several `versions`.
 ```js
 var image = {
   path: '/path/to/image.jpg',
-  width: 1024,
-  height: 768
+  width: 5184,
+  height: 2623
 };
 
 var output = {
@@ -68,16 +68,20 @@ var output = {
     aspect: "3:2"
   },{
     suffix: '-square',
-    maxHeight: 200,
     maxWidth: 200,
     aspect: "1:1"
-  ]}
+  }]
 };
 
 resize(image, output, function(error, versions) {
   if (error) { console.error(error); }
-  console.log(versions[0].path); // /path/to/image-thumb.jpg
-  console.log(versions[1].path); // /path/to/image-square.jpg
+  console.log(versions[0].path);   // /path/to/image-thumb.jpg
+  console.log(versions[0].width);  // 150
+  console.log(versions[0].height); // 100
+
+  console.log(versions[1].path);   // /path/to/image-square.jpg
+  console.log(versions[1].width);  // 200
+  console.log(versions[1].height); // 200
 });
 ```
 

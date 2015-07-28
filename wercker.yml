@@ -1,4 +1,4 @@
-box: starefossen/iojs-imagemagick:1-6
+box: starefossen/iojs-imagemagick:latest
 build:
   steps:
     - script:
@@ -12,7 +12,9 @@ build:
         code: |
             echo convert --version
 
-    - npm-install
+    - script:
+        name: npm install
+        code: npm install
 
     - script:
         name: jshint
