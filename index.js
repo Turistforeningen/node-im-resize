@@ -25,15 +25,21 @@ module.exports = function(image, output, cb) {
  * @return string geometry; false if no crop applies
  */
 module.exports.crop = function(image, ratio) {
-  if (!ratio) { return false; }
+  if (!ratio) {
+    return { geometry: null, width: image.width, height: image.height };
+  }
 
   var g = aspect.crop(image.width, image.height, ratio);
 
   // Check if the image already has the decired aspectratio.
   if (g[0] === 0 && g[1] === 0) {
-    return false;
+    return { geometry: null, width: image.width, height: image.height };
   } else {
-    return g[2] + 'x' + g[3]  + '+' + g[0] + '+' + g[1];
+    return {
+      geometry: sprintf('%dx%d+%d+%d', g[2], g[3], g[0], g[1]),
+      width: g[2],
+      height: g[3]
+    };
   }
 };
 
@@ -123,8 +129,8 @@ module.exports.cmdVersion = function(image, version, last) {
 
   // -crop
   var crop = module.exports.crop(image, version.aspect);
-  if (crop) {
-    cmd.push(sprintf('-crop "%s"', crop));
+  if (crop.geometry) {
+    cmd.push(sprintf('-crop "%s"', crop.geometry));
   }
 
   // -resize

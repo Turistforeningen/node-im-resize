@@ -56,22 +56,38 @@ describe('resize.path()', function() {
 describe('resize.crop()', function() {
   it('returns crop geometry for horisontal image', function() {
     var image = {width: 5184, height: 2623};
-    assert.equal(resize.crop(image, '3:2'), '3936x2623+624+0');
+    var crop = resize.crop(image, '3:2');
+
+    assert.equal(crop.geometry, '3936x2623+624+0');
+    assert.equal(crop.width, '3936');
+    assert.equal(crop.height, '2623');
   });
 
   it('returns crop geometry for vertical image', function() {
     var image = {height: 5184, width: 2623};
-    assert.equal(resize.crop(image, '3:2'), '2623x3936+0+624');
+    var crop = resize.crop(image, '3:2!v');
+
+    assert.equal(crop.geometry, '2623x3936+0+624');
+    assert.equal(crop.width, '2623');
+    assert.equal(crop.height, '3936');
   });
 
-  it('returns false for image with correct aspectratio', function() {
+  it('returns no crop for image with correct aspectratio', function() {
     var image = {width: 2000, height: 1000};
-    assert.equal(resize.crop(image, '2:1'), false);
+    var crop = resize.crop(image, '2:1');
+
+    assert.equal(crop.geometry, null);
+    assert.equal(crop.width, image.width);
+    assert.equal(crop.height, image.height);
   });
 
-  it('returns false if no aspectratio is defined', function() {
+  it('returns no crop if no aspectratio is defined', function() {
     var image = {width: 2000, height: 1000};
-    assert.equal(resize.crop(image), false);
+    var crop = resize.crop(image);
+
+    assert.equal(crop.geometry, null);
+    assert.equal(crop.width, image.width);
+    assert.equal(crop.height, image.height);
   });
 });
 
