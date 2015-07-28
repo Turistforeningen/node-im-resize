@@ -19,10 +19,13 @@ module.exports = function(image, output, cb) {
 /**
  * Get cropped geometry for given aspectratio
  *
- * @param string image - original image metadata
+ * @param object image - original image metadata
  * @param string ratio - new aspect ratio
  *
- * @return string geometry; false if no crop applies
+ * @return object geometry
+ *  - string geometry - crop geometry; or null
+ *  - number width    - image version height
+ *  - number height   - image version width
  */
 module.exports.crop = function(image, ratio) {
   if (!ratio) {
