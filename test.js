@@ -336,7 +336,7 @@ describe('resize()', function() {
   });
 
   it('resisizes horizontal image', function(done) {
-    this.timeout(10000);
+    this.timeout(5000);
 
     var image = {
       path: './assets/horizontal.jpg',
@@ -415,7 +415,7 @@ describe('resize()', function() {
   });
 
   it('resisizes vertical image', function(done) {
-    this.timeout(10000);
+    this.timeout(5000);
 
     var image = {
       path: './assets/vertical.jpg',
@@ -496,7 +496,7 @@ describe('resize()', function() {
   });
 
   it('resizes transparent image', function(done) {
-    this.timeout(10000);
+    this.timeout(5000);
 
     var image = {
       path: './assets/transparent.png',
@@ -583,7 +583,7 @@ describe('resize()', function() {
   });
 
   it('scales up small image', function(done) {
-    this.timeout(10000);
+    this.timeout(5000);
 
     var image = {
       path: './assets/small.jpg',
@@ -664,7 +664,7 @@ describe('resize()', function() {
   });
 
   it('auto-rotates rotated image', function(done) {
-    this.timeout(10000);
+    this.timeout(5000);
 
     var image = {
       path: './assets/autorotate.jpg',
