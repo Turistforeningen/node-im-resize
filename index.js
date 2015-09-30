@@ -8,7 +8,7 @@ var sprintf = require('util').format;
 
 module.exports = function(image, output, cb) {
   var cmd = module.exports.cmd(image, output);
-  exec(cmd, {timeout: 10000}, function(e, stdout, stderr) {
+  exec(cmd, {timeout: 30000}, function(e, stdout, stderr) {
     if (e) { return cb(e); }
     if (stderr) { return cb(new Error(stderr)); }
 
