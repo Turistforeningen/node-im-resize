@@ -257,7 +257,13 @@ describe('resize.cmdVersion()', function() {
     version.quality = 50;
 
     var cmd = resize.cmdVersion(image, version);
-    var out = 'mpr:./a.jpg -quality 50 -resize "500x500" -write a-b.jpg +delete';
+    var out = [
+      'mpr:./a.jpg',
+      '-quality 50',
+      '-resize "500x500"',
+      '-write a-b.jpg',
+      '+delete'
+    ].join(' ');
 
     assert.equal(cmd, out);
   });

@@ -109,9 +109,13 @@ module.exports.path = function(src, opts) {
  */
 module.exports.cmd = function(image, output) {
   var cmd = [
-    sprintf(
-      'convert %s -auto-orient -strip -write mpr:%s +delete', image.path, image.path
-    )
+    sprintf([
+      'convert %s',
+      '-auto-orient',
+      '-strip',
+      '-write mpr:%s',
+      '+delete'
+    ].join(' '), image.path, image.path)
   ];
 
   for (var i = 0; i < output.versions.length; i++) {
