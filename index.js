@@ -119,7 +119,7 @@ module.exports.cmd = function(image, output) {
     version.quality = version.quality || output.quality || 80;
 
     version.path = module.exports.path(image.path, {
-      format: version.format,
+      format: version.format || image.format,
       path: output.path,
       prefix: version.prefix || output.prefix || '',
       suffix: version.suffix || ''

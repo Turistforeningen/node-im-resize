@@ -137,6 +137,7 @@ describe('resize.cmd()', function() {
   beforeEach(function() {
     image = {
       path: './assets/horizontal.jpg',
+      format: 'JPEG',
       width: 5184,
       height: 2623
     };
@@ -194,6 +195,24 @@ describe('resize.cmd()', function() {
 
     assert.equal(output.versions[0].quality, 30);
     assert.equal(output.versions[1].quality, 99);
+  });
+
+  it('sets image format to each version', function() {
+    image.format = 'PNG';
+    resize.cmd(image, output);
+
+    assert(/.png$/.test(output.versions[0].path));
+    assert(/.png$/.test(output.versions[1].path));
+  });
+
+  it('preserves local version format', function() {
+    image.format = 'PNG';
+    output.versions[1].format = 'JPEG';
+
+    resize.cmd(image, output);
+
+    assert(/.png$/.test(output.versions[0].path));
+    assert(/.jpg$/.test(output.versions[1].path));
   });
 
   it('returns convert command', function() {
