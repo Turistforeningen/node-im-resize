@@ -125,7 +125,7 @@ describe('resize.resize()', function() {
 
   it('sets width and height on version object', function() {
     var version  = { maxWidth: 500, maxHeight: 500 };
-    var geometry = resize.resize(crop, version);
+    resize.resize(crop, version);
 
     assert.equal(version.width, 500);
     assert.equal(version.height, 333);
