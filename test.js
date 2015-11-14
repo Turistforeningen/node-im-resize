@@ -157,7 +157,6 @@ describe('resize.cmd()', function() {
   beforeEach(function() {
     image = {
       path: './assets/horizontal.jpg',
-      format: 'JPEG',
       width: 5184,
       height: 2623
     };
