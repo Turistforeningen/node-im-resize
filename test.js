@@ -6,70 +6,69 @@ var fs = require('fs');
 var resize = require('./index');
 
 describe('resize.path()', function() {
+  var opts;
+
+  beforeEach(function() {
+    opts = {
+      prefix: '',
+      suffix: '',
+      format: 'jpg'
+    };
+  });
+
   it('returns new relative path with suffix', function() {
-    var path = resize.path('./foo.jpg', {prefix: '', suffix: '-bar'});
+    opts.suffix = '-bar';
+    var path = resize.path('./foo.jpg', opts);
 
     assert.equal(path, 'foo-bar.jpg');
   });
 
   it('returns new relative path with custom format', function() {
-    var path = resize.path('./foo.jpg', {
-      prefix: '',
-      suffix: '-bar',
-      format: 'png'
-    });
+    opts.format = 'png';
+    var path = resize.path('./foo.jpg', opts);
 
-    assert.equal(path, 'foo-bar.png');
+    assert.equal(path, 'foo.png');
   });
 
-  it('lower cases custom image format', function() {
-    var path = resize.path('./foo', {
-      prefix: '',
-      suffix: '-bar',
-      format: 'JPG'
-    });
+  it('returns path for image without extension', function() {
+    var path = resize.path('./foo', opts);
 
-    assert.equal(path, 'foo-bar.jpg');
+    assert.equal(path, 'foo.jpg');
   });
 
-  it('replaces "jpeg" format with "jpg"', function() {
-    var path = resize.path('./foo', {
-      prefix: '',
-      suffix: '-bar',
-      format: 'JPEG'
-    });
+  it('replaces custom format "jpeg" with "jpg"', function() {
+    opts.format = 'jpeg';
+    var path = resize.path('./foo.jpeg', opts);
 
-    assert.equal(path, 'foo-bar.jpg');
+    assert.equal(path, 'foo.jpg');
   });
 
   it('returns new absolute path with suffix', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {prefix: '', suffix: '-bix'});
+    opts.suffix = '-bix';
+    var path = resize.path('/foo/bar/baz.jpg', opts);
+
     assert.equal(path, '/foo/bar/baz-bix.jpg');
   });
 
   it('returns new absolute path with custom format', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {
-      prefix: '',
-      suffix: '-bix',
-      format: 'png'
-    });
+    opts.format = 'png';
+    var path = resize.path('/foo/bar/baz.jpg', opts);
 
-    assert.equal(path, '/foo/bar/baz-bix.png');
+    assert.equal(path, '/foo/bar/baz.png');
   });
 
   it('returns new path with prefix', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {prefix: 'prefix-', suffix: ''});
-    assert.equal(path, '/foo/bar/prefix-baz.jpg');
+    opts.prefix = 'bix-';
+    var path = resize.path('/foo/bar/baz.jpg', opts);
+
+    assert.equal(path, '/foo/bar/bix-baz.jpg');
   });
 
   it('returns new path with custom directory', function() {
-    var path = resize.path('/foo/bar/baz.jpg', {
-      prefix: 'im-',
-      suffix: '',
-      path: '/tmp'
-    });
+    opts.path = '/tmp';
+    var path = resize.path('/foo/bar/baz.jpg', opts);
 
-    assert.equal(path, '/tmp/im-baz.jpg');
+    assert.equal(path, '/tmp/baz.jpg');
   });
 });
 
@@ -232,6 +231,16 @@ describe('resize.cmd()', function() {
 
     assert(/.png$/.test(output.versions[0].path));
     assert(/.jpg$/.test(output.versions[1].path));
+  });
+
+  it('sets default version format', function() {
+    image.format = undefined;
+    image.path = './assets/horizontal';
+
+    resize.cmd(image, output);
+
+    assert(/.jpg/.test(output.versions[0].path));
+    assert(/.jpg/.test(output.versions[1].path));
   });
 
   it('returns convert command', function() {
