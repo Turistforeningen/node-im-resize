@@ -92,7 +92,7 @@ module.exports.path = function(src, opts) {
 
   if (opts.format) {
     opts.format = opts.format.toLowerCase();
-    ext = '.' + opts.format;
+    ext = '.' + (opts.format !== 'jpeg' ? opts.format : 'jpg');
   }
 
   return join(dir, opts.prefix + base + opts.suffix + ext);

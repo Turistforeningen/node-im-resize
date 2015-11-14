@@ -32,6 +32,16 @@ describe('resize.path()', function() {
     assert.equal(path, 'foo-bar.jpg');
   });
 
+  it('replaces "jpeg" format with "jpg"', function() {
+    var path = resize.path('./foo', {
+      prefix: '',
+      suffix: '-bar',
+      format: 'JPEG'
+    });
+
+    assert.equal(path, 'foo-bar.jpg');
+  });
+
   it('returns new absolute path with suffix', function() {
     var path = resize.path('/foo/bar/baz.jpg', {prefix: '', suffix: '-bix'});
     assert.equal(path, '/foo/bar/baz-bix.jpg');
