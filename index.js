@@ -1,3 +1,5 @@
+'use strict';
+
 var exec = require('child_process').exec;
 var aspect = require('aspectratio');
 var dirname = require('path').dirname;

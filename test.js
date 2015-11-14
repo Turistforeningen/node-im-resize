@@ -1,3 +1,4 @@
+'use strict';
 /*jshint laxbreak:true */
 
 var assert = require('assert');
