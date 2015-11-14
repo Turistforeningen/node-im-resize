@@ -91,6 +91,7 @@ module.exports.path = function(src, opts) {
   var base = basename(src, ext);
 
   if (opts.format) {
+    opts.format = opts.format.toLowerCase();
     ext = '.' + opts.format;
   }
 
