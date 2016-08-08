@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Turistforeningen/node-im-resize",
   "devDependencies": {
     "jshint": "~2",
-    "mocha": "~2"
+    "mocha": "~3.0.2"
   },
   "dependencies": {
     "aspectratio": "~2.2"
