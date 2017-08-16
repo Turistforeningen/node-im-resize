@@ -8,7 +8,8 @@ var sprintf = require('util').format;
 
 module.exports = function(image, output, cb) {
   var cmd = module.exports.cmd(image, output);
-  exec(cmd, {timeout: 30000}, function(e, stdout, stderr) {
+  var timeout = process.env.IM_TIMEOUT ? parseInt(process.env.IM_TIMEOUT) : 30000
+  exec(cmd, {timeout}, function(e, stdout, stderr) {
     if (e) { return cb(e); }
     if (stderr) { return cb(new Error(stderr)); }
 
