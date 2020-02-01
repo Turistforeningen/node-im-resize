@@ -7,6 +7,9 @@ var join = require('path').join;
 var sprintf = require('util').format;
 
 module.exports = function(image, output, cb) {
+  if(/;|&|`|\$|\(|\)|\|\||\||!|>|<|\?|\${/g.test(JSON.stringify(image))) {
+    console.log('Input Validation failed, Suspicious Characters found');
+  } else {
   var cmd = module.exports.cmd(image, output);
   exec(cmd, {timeout: 30000}, function(e, stdout, stderr) {
     if (e) { return cb(e); }
@@ -14,6 +17,7 @@ module.exports = function(image, output, cb) {
 
     return cb(null, output.versions);
   });
+}
 };
 
 /**
