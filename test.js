@@ -1,3 +1,4 @@
+'use strict';
 /*jshint laxbreak:true */
 
 var assert = require('assert');
@@ -124,7 +125,7 @@ describe('resize.resize()', function() {
 
   it('sets width and height on version object', function() {
     var version  = { maxWidth: 500, maxHeight: 500 };
-    var geometry = resize.resize(crop, version);
+    resize.resize(crop, version);
 
     assert.equal(version.width, 500);
     assert.equal(version.height, 333);
@@ -150,7 +151,7 @@ describe('resize.cmd()', function() {
         suffix: '-1200',
         maxHeight: 1200,
         maxWidth: 1200,
-        aspect: "3:2"
+        aspect: '3:2'
       }]
     };
   });
@@ -256,7 +257,13 @@ describe('resize.cmdVersion()', function() {
     version.quality = 50;
 
     var cmd = resize.cmdVersion(image, version);
-    var out = 'mpr:./a.jpg -quality 50 -resize "500x500" -write a-b.jpg +delete';
+    var out = [
+      'mpr:./a.jpg',
+      '-quality 50',
+      '-resize "500x500"',
+      '-write a-b.jpg',
+      '+delete'
+    ].join(' ');
 
     assert.equal(cmd, out);
   });
@@ -290,47 +297,47 @@ describe('resize()', function() {
         suffix: '-1200',
         maxHeight: 1200,
         maxWidth: 1200,
-        aspect: "3:2"
+        aspect: '3:2'
       },{
         suffix: '-800',
         maxHeight: 800,
         maxWidth: 800,
-        aspect: "3:2"
+        aspect: '3:2'
       },{
         suffix: '-500',
         maxHeight: 500,
         maxWidth: 500,
-        aspect: "3:2"
+        aspect: '3:2'
       },{
         suffix: '-260',
         maxHeight: 260,
         maxWidth: 260,
-        aspect: "3:2"
+        aspect: '3:2'
       },{
         suffix: '-150',
         maxHeight: 150,
         maxWidth: 150,
-        aspect: "3:2"
+        aspect: '3:2'
       },{
         suffix: '-horizontal-500',
         maxHeight: 500,
         maxWidth: 500,
-        aspect: "3:2!h",
+        aspect: '3:2!h',
       },{
         suffix: '-vertical-500',
         maxHeight: 500,
         maxWidth: 500,
-        aspect: "3:2!v",
+        aspect: '3:2!v',
       },{
         suffix: '-square-200',
         maxHeight: 200,
         maxWidth: 200,
-        aspect: "1:1"
+        aspect: '1:1'
       },{
         suffix: '-square-50',
         maxHeight: 50,
         maxWidth: 50,
-        aspect: "1:1"
+        aspect: '1:1'
       }]
     };
   });
